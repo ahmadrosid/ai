@@ -13,7 +13,6 @@ Here is an example implementation of a chat application that uses both Vercel AI
 
 ```tsx filename="app/api/chat/route.ts" {1,11,15,28}
 import { StreamingTextResponse, LangChainStream, Message } from 'ai'
-import { CallbackManager } from 'langchain/callbacks'
 import { ChatOpenAI } from 'langchain/chat_models/openai'
 import { AIChatMessage, HumanChatMessage } from 'langchain/schema'
 
@@ -26,7 +25,7 @@ export async function POST(req: Request) {
 
   const llm = new ChatOpenAI({
     streaming: true,
-    callbackManager: CallbackManager.fromHandlers(handlers)
+    callbacks: [handlers]
   })
 
   llm
@@ -48,7 +47,7 @@ The `handlers` object returned by `LangChainStream` is used to handle certain
 Under the hood it is a wrapper over LangChain's [`handleChainEnd`](https://js.langchain.com/docs/api/callbacks/classes/BaseCallbackHandler#handlechainend), [`handleLLMNewToken`](https://js.langchain.com/docs/api/callbacks/classes/BaseCallbackHandler#handlellmnewtoken), and [`handleLLMError`](https://js.langchain.com/docs/api/callbacks/classes/BaseCallbackHandler#handlellmerror).
 We wrap over these methods to provide which then write to the `stream` which can then be passed directly to [`StreamingTextResponse`](../api-reference/streaming-text-response).
 
-The result is that ther Vercel AI SDK's [`useChat`](../api-reference/use-chat) and [`useCompletion`](../api-reference/use-completion) work flawlessly:
+The result is that the Vercel AI SDK's [`useChat`](../api-reference/use-chat) and [`useCompletion`](../api-reference/use-completion) work flawlessly:
 
 ```tsx filename="app/page.tsx"
 'use client'
@@ -68,12 +67,15 @@ export default function Chat() {
       ))}
 
       <form onSubmit={handleSubmit}>
-        <input
-          className="fixed w-full max-w-md bottom-0 border border-gray-300 rounded mb-8 shadow-xl p-2"
-          value={input}
-          placeholder="Say something..."
-          onChange={handleInputChange}
-        />
+        <label>
+          Say something...
+          <input
+            className="fixed w-full max-w-md bottom-0 border border-gray-300 rounded mb-8 shadow-xl p-2"
+            value={input}
+            onChange={handleInputChange}
+          />
+        </label>
+        <button type="submit">Send</button>
       </form>
     </div>
   )

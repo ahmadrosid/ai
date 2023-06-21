@@ -1,5 +1,45 @@
 # ai
 
+## 2.1.5
+
+### Patch Changes
+
+- 89938b0: Provider direct callback handlers in LangChain now that `CallbackManager` is deprecated.
+
+## 2.1.4
+
+### Patch Changes
+
+- c16d650: Improve type saftey for AIStream. Added JSDoc comments.
+
+## 2.1.3
+
+### Patch Changes
+
+- a9591fe: Add `createdAt` on `user` input message in `useChat` (it was already present in `assistant` messages)
+
+## 2.1.2
+
+### Patch Changes
+
+- f37d4ec: fix bundling
+
+## 2.1.1
+
+### Patch Changes
+
+- 9fdb51a: fix: add better typing for store within svelte implementation (#104)
+
+## 2.1.0
+
+### Minor Changes
+
+- 71f9c51: This adds Vue support for `ai` via the `ai/vue` subpath export. Vue composables `useChat` and `useCompletion` are provided.
+
+### Patch Changes
+
+- ad54c79: add tests
+
 ## 2.0.1
 
 ### Patch Changes
